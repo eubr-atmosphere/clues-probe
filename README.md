@@ -4,6 +4,13 @@ CLUES probe for `TMA Monitor` developed in `Python`. CLUES is the elasticity man
 
 
 ## Prerequisites
+The probe uses some python libraries that must be installed:
+
+
+```pip install requests
+pip install tmalibrary
+pip install wget
+```
 
 The probe is deployed as a `docker` container so, `docker` is mandatory. 
 
