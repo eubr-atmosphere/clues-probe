@@ -20,11 +20,13 @@ Before starting probe, you will need to configure the properties value in the co
 
 Also, you should build the `docker` image that will be used by the probe. You should do that by running the following commands on the Kubernetes Worker node:
 
-```cd clues-probe/
+```
+cd clues-probe/
 sh build.sh
 ```
 
 To deploy the probe, you should run the yaml file on the Kubernetes Master machine:
 
-```kubectl create -f clues-probe.yaml
+```
+kubectl create -f clues-probe.yaml
 ```
