@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+
+
+kind: Deployment
+
+metadata:
+  name: clues-probe
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: clues-probe
+
+  template:
+    metadata:
+      labels:
+        run: clues-probe
+
+    spec:
+      containers:
+      - name: clues-probe
+        image: tma-monitor/clues-probe:0.1
+tty: true
