@@ -4,7 +4,7 @@ WORKDIR	/clues-probe
 
 COPY 	cert.pem 	/clues-probe
 COPY 	clues-probe.py 		/clues-probe
-COPY  conf.py /clues-probe
+COPY 	conf.py /clues-probe
 
 RUN pip install requests
 RUN pip install tmalibrary
