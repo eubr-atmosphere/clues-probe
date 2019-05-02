@@ -15,7 +15,7 @@ The probe is deployed as a `docker` container so, `docker` is mandatory.
 
 ## Usage
 
-Before starting probe, you will need to configure the properties value in the configuration file. The monitor endpoint should be specified.
+Before starting probe, you will need to configure the properties value in the configuration file 'conf.py'. The monitor endpoint should be specified and also the clues endpoint.
 
 Also, you should build the `docker` image that will be used by the probe. You should do that by running the following commands on the Kubernetes Worker node:
 
