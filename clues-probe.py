@@ -2,11 +2,12 @@ import json
 import requests
 import time
 from tmalibrary.probes import *
+from conf import *
 
 def check_used_cpus():
    #TODO: read the clues_url from the conf file
-   clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
-   clues_data = requests.get(clues_url).text
+   #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
+   clues_data = requests.get(CLUES_ENDPOINT).text
 
    # parse clues_data:
    y = json.loads(clues_data)
@@ -14,8 +15,8 @@ def check_used_cpus():
 
 def check_free_cpus():
    #TODO: read the clues_url from the conf file
-   clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
-   clues_data = requests.get(clues_url).text
+   #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
+   clues_data = requests.get(CLUES_ENDPOINT).text
 
    # parse clues_data:
    y = json.loads(clues_data)
@@ -23,8 +24,8 @@ def check_free_cpus():
 
 def check_deployment_change():
    #TODO: read the clues_url from the conf file
-   clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
-   clues_data = requests.get(clues_url).text
+   #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
+   clues_data = requests.get(CLUES_ENDPOINT).text
 
    # parse clues_data:
    y = json.loads(clues_data)
@@ -71,8 +72,8 @@ def create_message():
 
 if __name__ == '__main__':
     #TODO: read the monitor URL from the conf file
-    #url = 'http://158.42.104.30:32025/monitor'
-    url = str(sys.argv[1] + '')
+    #url = str(sys.argv[1] + '')
+    url = MONITOR_ENDPOINT
     communication = Communication(url)
     while 1:
        message_formated = create_message()
