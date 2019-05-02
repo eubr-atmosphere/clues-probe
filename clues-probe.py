@@ -4,35 +4,50 @@ import time
 from tmalibrary.probes import *
 from conf import *
 
-def check_used_cpus():
-   #TODO: read the clues_url from the conf file
+def check_clues_status():
    #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
    clues_data = requests.get(CLUES_ENDPOINT).text
 
    # parse clues_data:
-   y = json.loads(clues_data)
-   return y["hostevents"]["wn1.localdomain"][4]["slots"]
+   clues_info = json.loads(clues_data)
 
-def check_free_cpus():
-   #TODO: read the clues_url from the conf file
-   #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
-   clues_data = requests.get(CLUES_ENDPOINT).text
+   hosts = clues_info["hostevents"]
+   free_cpus = 0
+   used_cpus = 0
 
-   # parse clues_data:
-   y = json.loads(clues_data)
-   return y["hostevents"]["wn1.localdomain"][4]["slots_used"]
+   # CLUES states:
+   # ERROR = -2
+   # UNKNOWN = -1
+   # IDLE = 0
+   # USED = 1
+   # OFF = 2
+   # POW_ON = 3
+   # POW_OFF = 4
+   # ON_ERR = 5
+   # OFF_ERR = 6
+   # Consider only status 0,1,3 and 4 to count used and free cpus
+
+   for node, events in hosts.items():
+     if events[-1]["state"] in range (0,4) and events[-1]["state"] != 2:
+        used_cpus += events[-1]["slots_used"]
+        free_cpus += events[-1]["slots"]-events[-1]["slots_used"]
+
+   return used_cpus, free_cpus
 
 def check_deployment_change():
-   #TODO: read the clues_url from the conf file
    #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
    clues_data = requests.get(CLUES_ENDPOINT).text
 
    # parse clues_data:
-   y = json.loads(clues_data)
-
+   clues_info = json.loads(clues_data)
+   #how to know if a change has ben produced? I need to store the last status for that
+   return False
 
 def create_message():
    timestamp = int(time.time())
+   # ask CLUES the status of the cluster
+   (used_cpus, free_cpus) = check_clues_status()
+
    # TODO: need to change the probeId, resourceId and messageId
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
@@ -41,7 +56,7 @@ def create_message():
 
    # append measurement of used cpus data to message
    dt = Data(type="measurement", descriptionId=1, observations=None)
-   obs = Observation(time=timestamp, value=check_used_cpus())
+   obs = Observation(time=timestamp, value=used_cpus)
    dt.add_observation(observation=obs)
 
    # append data to message
@@ -49,13 +64,13 @@ def create_message():
 
    # append measurement of free cpus data to message
    dt = Data(type="measurement", descriptionId=2, observations=None)
-   obs = Observation(time=timestamp, value=check_free_cpus())
+   obs = Observation(time=timestamp, value=free_cpus)
    dt.add_observation(observation=obs)
 
    # append data to message
    message.add_data(data=dt)
 
-   # Check if the infrastructure has been modified and inform of that change
+   # TODO: Check if the infrastructure has been modified and inform of that change
    has_infrastructure_changed = check_deployment_change()
    if has_infrastructure_changed:
       # append deployment change event data to message
@@ -72,6 +87,7 @@ def create_message():
 
 if __name__ == '__main__':
     #TODO: read the monitor URL from the conf file
+    #url = 'http://158.42.104.30:32025/monitor'
     #url = str(sys.argv[1] + '')
     url = MONITOR_ENDPOINT
     communication = Communication(url)
