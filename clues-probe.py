@@ -86,8 +86,6 @@ def create_message():
 
 
 if __name__ == '__main__':
-    #TODO: read the monitor URL from the conf file
-    #url = 'http://158.42.104.30:32025/monitor'
     #url = str(sys.argv[1] + '')
     url = MONITOR_ENDPOINT
     communication = Communication(url)
