@@ -4,7 +4,7 @@ import time
 from tmalibrary.probes import *
 from conf import *
 
-def check_clues_status():
+def check_clues_cpus_status():
    #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
    clues_data = requests.get(CLUES_ENDPOINT).text
 
@@ -25,14 +25,44 @@ def check_clues_status():
    # POW_OFF = 4
    # ON_ERR = 5
    # OFF_ERR = 6
-   # Consider only status 0,1,3 and 4 to count used and free cpus
+   # Consider only status 0,1,3 to count used and free cpus
 
    for node, events in hosts.items():
-     if events[-1]["state"] in range (0,4) and events[-1]["state"] != 2:
+     if events[-1]["state"] in range (0,3) and events[-1]["state"] != 2:
         used_cpus += events[-1]["slots_used"]
         free_cpus += events[-1]["slots"]-events[-1]["slots_used"]
 
    return used_cpus, free_cpus
+
+def check_clues_mem_status():
+   #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
+   clues_data = requests.get(CLUES_ENDPOINT).text
+
+   # parse clues_data:
+   clues_info = json.loads(clues_data)
+
+   hosts = clues_info["hostevents"]
+   free_mem = 0
+   used_mem = 0
+
+   # CLUES node states:
+   # ERROR = -2
+   # UNKNOWN = -1
+   # IDLE = 0
+   # USED = 1
+   # OFF = 2
+   # POW_ON = 3
+   # POW_OFF = 4
+   # ON_ERR = 5
+   # OFF_ERR = 6
+   # Consider only status 0,1,3 to count used and free cpus
+
+   for node, events in hosts.items():
+     if events[-1]["state"] in range (0,3) and events[-1]["state"] != 2:
+        used_mem += events[-1]["memory_used"]
+        free_mem += events[-1]["memory"]-events[-1]["memory_used"]
+
+   return used_mem, free_mem
 
 def check_deployment_change():
    #clues_url = 'http://localhost:8000/reports/cluesdata.json?secret=not_very_secret_token'
@@ -46,7 +76,7 @@ def check_deployment_change():
 def create_message():
    timestamp = int(time.time())
    # ask CLUES the status of the cluster
-   (used_cpus, free_cpus) = check_clues_status()
+   (used_cpus, free_cpus) = check_clues_cpus_status()
 
    # TODO: need to change the probeId, resourceId and messageId
    # probeId: obtained during authentication HOW?
@@ -83,7 +113,6 @@ def create_message():
 
    # return message formatted in json
    return json.dumps(message.reprJSON(), cls=ComplexEncoder)
-
 
 if __name__ == '__main__':
     #url = str(sys.argv[1] + '')
