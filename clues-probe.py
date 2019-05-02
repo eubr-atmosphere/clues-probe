@@ -15,7 +15,7 @@ def check_clues_status():
    free_cpus = 0
    used_cpus = 0
 
-   # CLUES states:
+   # CLUES node states:
    # ERROR = -2
    # UNKNOWN = -1
    # IDLE = 0
