@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+
+
+kind: Deployment
+
+metadata:
+  name: resource-scalability
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: resource-scalability
+
+  template:
+    metadata:
+      labels:
+        run: resource-scalability
+
+    spec:
+      containers:
+      - name: resource-scalability
+        image: tma-monitor/resource-scalability:0.1
+tty: true

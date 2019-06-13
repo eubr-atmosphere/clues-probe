@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+
+
+kind: Deployment
+
+metadata:
+  name: service-performance
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: service-performance
+
+  template:
+    metadata:
+      labels:
+        run: service-performance
+
+    spec:
+      containers:
+      - name: service-performance
+        image: tma-monitor/service-performance:0.1
+tty: true

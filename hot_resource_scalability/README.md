@@ -1,18 +1,20 @@
-# CLUES Probes for TMA-Monitor
+# Hot Resource Scalability: CLUES Probe for TMA-Monitor
 
-CLUES probes for `TMA Monitor` developed in `Python`. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. 
+CLUES probe for `TMA Monitor` developed in `Python`. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. This probe obtains the % of used and free CPUs and the % of used and free RAM memory of the nodes currently powered on in the cluster by processing the CLUES DB.
 
-The probes for CLUES are:
 
-- hot_resource_scalability: % of used and free CPUs and % of used and free RAM memory without powering on new VMs.
-- resource_scalability: % of used CPUs and RAM memory in the cluster, taking into account all the nodes, regardless their state. Also it obtains the total CPU and RAM that the cluster can have.
-- service_availability: % Failure of CLUES.
-- service_performance: average time required for CLUES to provide a new configured node.
+## Prerequisites
+The probe uses some python libraries that must be installed:
 
+``` 
+pip install requests
+pip install tmalibrary
+pip install wget
+```
+
+The probe is deployed as a `docker` container so, `docker` is mandatory. 
 
 ## Usage
-
-All probes require the same configuration:
 
 Before starting probe, you will need to configure the properties value in the configuration file. The monitor endpoint should be specified, as the CLUES endpoint.
 
@@ -27,12 +29,12 @@ Substitute the certificate you download from this repo by the obtained certifica
 Then, you should build the `docker` image that will be used by the probe. You should do that by running the following commands on the Kubernetes Worker node:
 
 ```
-cd <probe_name>/
+cd hot_resource_scalability/
 sh build.sh
 ```
 
 Finally, to deploy the probe, you should run the yaml file on the Kubernetes Master machine:
 
 ```
-kubectl create -f <probe_name>.yaml
+kubectl create -f hot-resource-scalability.yaml
 ```

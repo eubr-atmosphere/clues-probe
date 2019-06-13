@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+
+
+kind: Deployment
+
+metadata:
+  name: service-availability
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: service-availability
+
+  template:
+    metadata:
+      labels:
+        run: service-availability
+
+    spec:
+      containers:
+      - name: service-availability
+        image: tma-monitor/service-availability:0.1
+tty: true
