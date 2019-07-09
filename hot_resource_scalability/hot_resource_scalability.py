@@ -87,7 +87,9 @@ def create_message(messageId):
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
-   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+
+   # Create CPU message
+   messagecpu = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of used cpus data to message
    dt = Data(type="measurement", descriptionId=1, observations=None)
@@ -95,7 +97,7 @@ def create_message(messageId):
    dt.add_observation(observation=obs)
 
    # append data to message
-   message.add_data(data=dt)
+   messagecpu.add_data(data=dt)
 
    # append measurement of free cpus data to message
    dt = Data(type="measurement", descriptionId=2, observations=None)
@@ -103,7 +105,10 @@ def create_message(messageId):
    dt.add_observation(observation=obs)
 
    # append data to message
-   message.add_data(data=dt)
+   messagecpu.add_data(data=dt)
+
+   # Create memory message
+   messagemem = Message(probeId=1, resourceId=101099, messageId=messageId+1, sentTime=timestamp, data=None)
 
    # append measurement of used memory data to message
    dt = Data(type="measurement", descriptionId=3, observations=None)
@@ -111,7 +116,7 @@ def create_message(messageId):
    dt.add_observation(observation=obs)
 
    # append data to message
-   message.add_data(data=dt)
+   messagemem.add_data(data=dt)
 
    # append measurement of free memory data to message
    dt = Data(type="measurement", descriptionId=3, observations=None)
@@ -119,9 +124,9 @@ def create_message(messageId):
    dt.add_observation(observation=obs)
 
    # append data to message
-   message.add_data(data=dt)
+   messagemem.add_data(data=dt)
 
-   return json.dumps(message.reprJSON(), cls=ComplexEncoder)
+   return json.dumps(messagecpu.reprJSON(), cls=ComplexEncoder), json.dumps(messagemem.reprJSON(), cls=ComplexEncoder)
 
 
 if __name__ == '__main__':
@@ -130,9 +135,10 @@ if __name__ == '__main__':
     communication = Communication(url)
     messageId = 0
     while 1:
-       messageId +=1
-       message_formated = create_message(messageId)
-       response = communication.send_message(message_formated)
+       (message_cpu, message_mem) = create_message(messageId)
+       messageId +=2
+       responsecpu = communication.send_message(message_cpu)
+       responsemem = communication.send_message(message_mem)
        time.sleep(10)
-       print (response.text)
-
+       print (responsecpu.text)
+       print (responsemem.text)
