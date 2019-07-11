@@ -7,7 +7,7 @@ The probes for CLUES are:
 - hot_resource_scalability: % of used and free CPUs and % of used and free RAM memory without powering on new VMs.
 - resource_scalability: % of used CPUs and RAM memory in the cluster, taking into account all the nodes, regardless their state. Also it obtains the total CPU and RAM that the cluster can have.
 - service_availability: % Failure of CLUES.
-- service_performance: average time required for CLUES to provide a new configured node.
+- service_performance: coefficient of variation to detect possible anomalies in the time required for CLUES to provide a new configured node.
 
 
 ## Usage
