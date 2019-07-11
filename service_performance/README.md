@@ -1,6 +1,6 @@
 # Service Performance: CLUES Probe for TMA-Monitor
 
-CLUES probe for `TMA Monitor` developed in `Python`. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. This probe calculates average time to power on a new node in the cluster. This time includes the time to deploy the new VM and the time to configure the VM to behave as a working node of the cluster.
+CLUES probe for `TMA Monitor` developed in `Python`. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. This probe calculates average time to power on a new node in the cluster. This time includes the time to deploy the new VM and the time to configure the VM to behave as a working node of the cluster. Then, it calculates the standard deviation and returns the coefficient of variation to detect possible anomalies when powering on a node.
 
 
 ## Prerequisites
