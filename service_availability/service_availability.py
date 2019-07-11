@@ -45,17 +45,17 @@ if __name__ == '__main__':
     url = MONITOR_ENDPOINT
     communication = Communication(url)
     messageId = 0
-    totalCalls = 0
+    totalCalls = 1
     failures = 0
     while 1:
-       messageId +=1
-       totalCalls +=1
        availability = pingclues("clues status")
        if availability == False :
            failures +=1
        cluesavailability = (failures * 100) / float(totalCalls) 
        message_formated = create_message(messageId, cluesavailability)
        response = communication.send_message(message_formated)
+       messageId +=1
+       totalCalls +=1
        time.sleep(60)
        print (response.text)
 
