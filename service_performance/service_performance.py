@@ -1,6 +1,7 @@
 import json
 import requests
 import time
+import math
 from tmalibrary.probes import *
 from conf import *
 
@@ -24,6 +25,7 @@ def check_clues_status():
    # ON_ERR = 5
    # OFF_ERR = 6
 
+   # First, we calculate the average time to deploy a node
    tdeployment = 0
    tdeployment_total = 0
    count = 0
@@ -31,14 +33,41 @@ def check_clues_status():
    for node, events in hosts.items():
       for event in events:
          if event["state"] == 3:
-            if events[events.index(event)+1]["state"] == 0:
-               tdeployment = events[events.index(event)+1]["t"] - event["t"]
-               count += 1
-               tdeployment_total += tdeployment
+            try:
+               if events[events.index(event)+1]["state"] == 0 or events[events.index(event)+1]["state"] == 1:
+                  tdeployment = events[events.index(event)+1]["t"] - event["t"]
+                  count += 1
+                  tdeployment_total += tdeployment
+            except:
+               pass
 
    tmedio = tdeployment_total / float(count)
-   print "tiempo medio despliegue WN: " + str(tmedio)
-   return tmedio
+
+   # Then we calculate the standard deviation
+   sum = 0
+   p = 0
+   s = 0
+   for node, events in hosts.items():
+      for event in events:
+         if event["state"] == 3:
+            try:
+               if events[events.index(event)+1]["state"] == 0 or events[events.index(event)+1]["state"] == 1:
+                  tdeployment = events[events.index(event)+1]["t"] - event["t"]
+                  diff = tdeployment - tmedio
+                  p = pow(diff, 2)
+                  sum = sum + p
+            except:
+               pass
+
+   if count-1 > 0:
+      s = math.sqrt(sum/(count -1))
+   #print "desviacion " + str(s)
+
+   # Finally we calculate the coefficient of variation
+   cv = (s/tmedio)*100
+   #print "coef. variacion: " + str(cv)
+   return cv
+
 
 def create_message(messageId):
    timestamp = int(time.time())
@@ -67,10 +96,9 @@ if __name__ == '__main__':
     communication = Communication(url)
     messageId = 0
     while 1:
-       messageId +=1
        message_formated = create_message(messageId)
        response = communication.send_message(message_formated)
+       messageId +=1
        time.sleep(60)
        print (response.text)
-
 
