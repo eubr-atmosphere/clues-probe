@@ -99,6 +99,6 @@ if __name__ == '__main__':
        message_formated = create_message(messageId)
        response = communication.send_message(message_formated)
        messageId +=1
-       time.sleep(60)
+       time.sleep(120)
        print (response.text)
 
