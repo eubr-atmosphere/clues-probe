@@ -102,6 +102,6 @@ if __name__ == '__main__':
        messageId +=2
        responsecpu = communication.send_message(message_cpu)
        responsemem = communication.send_message(message_mem)
-       time.sleep(10)
+       time.sleep(60)
        print (responsecpu.text)
        print (responsemem.text)
