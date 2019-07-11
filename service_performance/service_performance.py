@@ -41,7 +41,9 @@ def check_clues_status():
             except:
                pass
 
-   tmedio = tdeployment_total / float(count)
+   tmedio = 0
+   if count > 0:
+      tmedio = tdeployment_total / float(count)
 
    # Then we calculate the standard deviation
    sum = 0
@@ -64,7 +66,9 @@ def check_clues_status():
    #print "desviacion " + str(s)
 
    # Finally we calculate the coefficient of variation
-   cv = (s/tmedio)*100
+   cv = 0
+   if tmedio > 0:
+      cv = (s/tmedio)*100
    #print "coef. variacion: " + str(cv)
    return cv
 
