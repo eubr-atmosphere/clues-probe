@@ -56,6 +56,6 @@ if __name__ == '__main__':
        response = communication.send_message(message_formated)
        messageId +=1
        totalCalls +=1
-       time.sleep(60)
+       time.sleep(30)
        print (response.text)
 
