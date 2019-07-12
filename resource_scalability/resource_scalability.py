@@ -49,47 +49,47 @@ def create_message(messageId):
    (used_cpus, used_mem, total_cpus, total_mem) = calculate_values_cpu_mem()
 
    # Calculate % of used CPU and mem
-   used_cpu_pct = (used_cpus * 100) / float(total_cpus)
-   used_mem_pct = (used_mem * 100) / float(total_mem)
+   used_cpu_pct = 0
+   used_mem_pct = 0
+
+   if total_cpus > 0:
+      used_cpu_pct = (used_cpus * 100) / float(total_cpus)
+
+   if total_mem > 0:
+      used_mem_pct = (used_mem * 100) / float(total_mem)
 
    # TODO: need to change the probeId, resourceId and messageId
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
-    
-   # Create CPU message
-   messagecpu = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of used cpus data to message
    dt = Data(type="measurement", descriptionId=1, observations=None)
    obs = Observation(time=timestamp, value=used_cpu_pct)
    dt.add_observation(observation=obs)
-   messagecpu.add_data(data=dt)
+   message.add_data(data=dt)
 
-   # append measurement of total cpus data to message
+   # append measurement of used memory data to message
    dt = Data(type="measurement", descriptionId=2, observations=None)
-   obs = Observation(time=timestamp, value=total_cpus)
+   obs = Observation(time=timestamp, value=used_mem_pct)
    dt.add_observation(observation=obs)
-   messagecpu.add_data(data=dt)
-    
-   # Create memory message
-   messagemem = Message(probeId=1, resourceId=101099, messageId=messageId+1, sentTime=timestamp, data=None)
+   message.add_data(data=dt)
 
    # Add to the message the static values of total CPU and total Mem
    # append measurement of total memory data to message
    dt = Data(type="measurement", descriptionId=3, observations=None)
    obs = Observation(time=timestamp, value=total_mem)
    dt.add_observation(observation=obs)
-   messagemem.add_data(data=dt)
+   message.add_data(data=dt)
 
-   # append measurement of used memory data to message
+   # append measurement of total cpus data to message
    dt = Data(type="measurement", descriptionId=4, observations=None)
-   obs = Observation(time=timestamp, value=used_mem_pct)
+   obs = Observation(time=timestamp, value=total_cpus)
    dt.add_observation(observation=obs)
-   messagemem.add_data(data=dt)
+   message.add_data(data=dt)
 
-   #return json.dumps(message.reprJSON(), cls=ComplexEncoder)
-   return json.dumps(messagecpu.reprJSON(), cls=ComplexEncoder), json.dumps(messagemem.reprJSON(), cls=ComplexEncoder)
+   return json.dumps(message.reprJSON(), cls=ComplexEncoder)
 
 
 if __name__ == '__main__':
@@ -98,10 +98,8 @@ if __name__ == '__main__':
     communication = Communication(url)
     messageId = 0
     while 1:
-       (message_cpu, message_mem) = create_message(messageId)
-       messageId +=2
-       responsecpu = communication.send_message(message_cpu)
-       responsemem = communication.send_message(message_mem)
-       time.sleep(60)
-       print (responsecpu.text)
-       print (responsemem.text)
+       message_formated = create_message(messageId)
+       messageId +=1
+       response = communication.send_message(message_formated)
+       time.sleep(10)
+       print (response.text)
