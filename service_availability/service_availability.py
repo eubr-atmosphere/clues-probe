@@ -26,10 +26,10 @@ def create_message(messageId, cluesavailability):
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
    # estos datos los tengo que solicitar a UC cuando registremos el probe
-   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+   message = Message(probeId=10003, resourceId=10005, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of % failure of CLUES to message
-   dt = Data(type="measurement", descriptionId=1, observations=None)
+   dt = Data(type="measurement", descriptionId=10007, observations=None)
    obs = Observation(time=timestamp, value=cluesavailability)
    dt.add_observation(observation=obs)
 
