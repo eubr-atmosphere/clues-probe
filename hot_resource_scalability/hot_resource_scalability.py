@@ -99,7 +99,7 @@ def create_message(messageId):
 
    # append measurement of used cpus data to message
    dt = Data(type="measurement", descriptionId=1, observations=None)
-   obs = Observation(time=timestamp, value=used_cpus_pct)
+   obs = Observation(time=timestamp, value=used_cpu_pct)
    dt.add_observation(observation=obs)
 
    # append data to message
@@ -107,7 +107,7 @@ def create_message(messageId):
 
    # append measurement of free cpus data to message
    dt = Data(type="measurement", descriptionId=2, observations=None)
-   obs = Observation(time=timestamp, value=free_cpus_pct)
+   obs = Observation(time=timestamp, value=free_cpu_pct)
    dt.add_observation(observation=obs)
 
    # append data to message
