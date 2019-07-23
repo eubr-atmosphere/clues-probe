@@ -82,10 +82,10 @@ def create_message(messageId):
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
-   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+   message = Message(probeId=10004, resourceId=10005, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of deployment time to message
-   dt = Data(type="measurement", descriptionId=1, observations=None)
+   dt = Data(type="measurement", descriptionId=10008, observations=None)
    obs = Observation(time=timestamp, value=deployment_time)
    dt.add_observation(observation=obs)
    message.add_data(data=dt)
