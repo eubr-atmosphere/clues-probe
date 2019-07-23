@@ -62,29 +62,29 @@ def create_message(messageId):
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
-   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+   message = Message(probeId=10002, resourceId=10004, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of used cpus data to message
-   dt = Data(type="measurement", descriptionId=1, observations=None)
+   dt = Data(type="measurement", descriptionId=10001, observations=None)
    obs = Observation(time=timestamp, value=used_cpu_pct)
    dt.add_observation(observation=obs)
    message.add_data(data=dt)
 
    # append measurement of used memory data to message
-   dt = Data(type="measurement", descriptionId=2, observations=None)
+   dt = Data(type="measurement", descriptionId=10003, observations=None)
    obs = Observation(time=timestamp, value=used_mem_pct)
    dt.add_observation(observation=obs)
    message.add_data(data=dt)
 
    # Add to the message the static values of total CPU and total Mem
    # append measurement of total memory data to message
-   dt = Data(type="measurement", descriptionId=3, observations=None)
+   dt = Data(type="measurement", descriptionId=10006, observations=None)
    obs = Observation(time=timestamp, value=total_mem)
    dt.add_observation(observation=obs)
    message.add_data(data=dt)
 
    # append measurement of total cpus data to message
-   dt = Data(type="measurement", descriptionId=4, observations=None)
+   dt = Data(type="measurement", descriptionId=10005, observations=None)
    obs = Observation(time=timestamp, value=total_cpus)
    dt.add_observation(observation=obs)
    message.add_data(data=dt)
