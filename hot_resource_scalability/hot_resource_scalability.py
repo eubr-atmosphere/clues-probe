@@ -95,10 +95,10 @@ def create_message(messageId):
    # probeId: obtained during authentication HOW?
    # resourceId: identifies the resource that is the subject of the attached data
    # messageId: secuencia de numeros generada por el probe, de forma creciente
-   message = Message(probeId=1, resourceId=101098, messageId=messageId, sentTime=timestamp, data=None)
+   message = Message(probeId=10001, resourceId=10004, messageId=messageId, sentTime=timestamp, data=None)
 
    # append measurement of used cpus data to message
-   dt = Data(type="measurement", descriptionId=1, observations=None)
+   dt = Data(type="measurement", descriptionId=10001, observations=None)
    obs = Observation(time=timestamp, value=used_cpu_pct)
    dt.add_observation(observation=obs)
 
@@ -106,7 +106,7 @@ def create_message(messageId):
    message.add_data(data=dt)
 
    # append measurement of free cpus data to message
-   dt = Data(type="measurement", descriptionId=2, observations=None)
+   dt = Data(type="measurement", descriptionId=10002, observations=None)
    obs = Observation(time=timestamp, value=free_cpu_pct)
    dt.add_observation(observation=obs)
 
@@ -114,7 +114,7 @@ def create_message(messageId):
    message.add_data(data=dt)
 
    # append measurement of used memory data to message
-   dt = Data(type="measurement", descriptionId=3, observations=None)
+   dt = Data(type="measurement", descriptionId=10003, observations=None)
    obs = Observation(time=timestamp, value=used_mem_pct)
    dt.add_observation(observation=obs)
 
@@ -122,7 +122,7 @@ def create_message(messageId):
    message.add_data(data=dt)
 
    # append measurement of free memory data to message
-   dt = Data(type="measurement", descriptionId=3, observations=None)
+   dt = Data(type="measurement", descriptionId=10004, observations=None)
    obs = Observation(time=timestamp, value=free_mem_pct)
    dt.add_observation(observation=obs)
 
