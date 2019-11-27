@@ -1,6 +1,6 @@
 # CLUES Probes for TMA-Monitor
 
-CLUES probes for `TMA Monitor` developed in `Python`. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. 
+CLUES probes for `TMA Monitor` developed in `Python` 3. CLUES is the elasticity manager of the clusters launched by EC3 inside the ATMOSPHERE project. 
 
 The probes for CLUES are:
 
@@ -13,6 +13,8 @@ The probes for CLUES are:
 ## Usage
 
 All probes require the same configuration:
+
+First, they have to run using Python 3. And the python libraries should be installed by using pip3.
 
 Before starting probe, you will need to configure the properties value in the configuration file. The monitor endpoint should be specified, as the CLUES endpoint.
 
