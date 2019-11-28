@@ -22,7 +22,7 @@ def calculate_values_cpu_mem():
 
    # process the output
    i=0
-   lines = len(output.split('\n'))
+   lines = len(output.split(b'\n'))
    cpu_used = 0
    mem_used = 0
    cpu_total = 0
@@ -33,8 +33,8 @@ def calculate_values_cpu_mem():
       # we remove the headers of the output and the last blank line
       if i>=3 and i < lines-1:
           node = line.split()
-          node_used_resources = node[4].split(",")
-          node_total_resources = node[5].split(",")
+          node_used_resources = node[4].split(b",")
+          node_total_resources = node[5].split(b",")
           cpu_used += float(node_used_resources[0])
           mem_used += float(node_used_resources[1])
           cpu_total += float(node_total_resources[0])
